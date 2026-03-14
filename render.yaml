@@ -1,0 +1,35 @@
+# render.yaml
+# Render Blueprint for Unified Docker Deployment
+# This configuration uses the root Dockerfile to deploy both frontend and backend as one service.
+
+services:
+  - type: web
+    name: shaadibio-fullstack
+    env: docker
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Mandatory variables to be set in Render Dashboard:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CLOUD_NAME
+        sync: false
+      - key: API_KEY
+        sync: false
+      - key: API_SECRET
+        sync: false
+      - key: FOLDER_NAME
+        value: "Shaadibio"
+      # Brevo transactional email (recommended)
+      - key: BREVO_KEY
+        sync: false
+      - key: BREVO_SENDER
+        sync: false
+      - key: BREVO_SENDER_NAME
+        value: "Shaadibio"

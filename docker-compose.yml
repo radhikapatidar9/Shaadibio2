@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: shaadibio-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  backend:
+    build: ./backend
+    container_name: shaadibio-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    env_file:
+      - ./backend/.env
+    # The .env file should define:
+    # DATABASE_URL=mongodb://mongo:27017/shaadibio
+    # RESEND_API_KEY=re_...
+
+  frontend:
+    build: ./frontend
+    container_name: shaadibio-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongo-data:
